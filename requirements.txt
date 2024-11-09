@@ -1,2 +1,5 @@
 ruff
 numpy
+requests
+advent-of-code-data
+importlib
