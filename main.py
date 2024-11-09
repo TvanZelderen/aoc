@@ -69,7 +69,9 @@ class AdventRunner:
         """
         part_func = getattr(self.module, f"part{part_num}", None)
         if not part_func:
-            return f"Part {part_num} not implemented for year {self.year} day {self.day}"
+            return (
+                f"Part {part_num} not implemented for year {self.year} day {self.day}"
+            )
 
         try:
             part_func(self._get_input_data())
@@ -90,7 +92,7 @@ class AdventRunner:
     def run(self):
         """Execute both parts of the day's solution."""
         self.start_time = perf_counter()
-        
+
         for part in (1, 2):
             result = self._run_part(part)
             if result:
@@ -105,13 +107,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "year", type=int, help="The year of the Advent of Code challenge"
     )
+    parser.add_argument("day", type=int, help="The day of the Advent of Code challenge")
     parser.add_argument(
-        "day", type=int, help="The day of the Advent of Code challenge"
-    )
-    parser.add_argument(
-        "--example", 
-        action="store_true", 
-        help="Use example input data instead of actual input"
+        "--example",
+        action="store_true",
+        help="Use example input data instead of actual input",
     )
     return parser.parse_args()
 
