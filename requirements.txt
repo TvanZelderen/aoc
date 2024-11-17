@@ -3,3 +3,4 @@ numpy
 requests
 advent-of-code-data
 importlib
+python-dotenv

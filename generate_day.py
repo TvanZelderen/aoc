@@ -2,6 +2,8 @@ import argparse
 from pathlib import Path
 from aocd import get_data
 from datetime import date
+from dotenv import load_dotenv
+import os
 
 
 def create_data_file(year, day):
@@ -43,6 +45,11 @@ def create_solution_file(year, day):
 
 
 def main():
+    # load AoC cookie from .env file
+    load_dotenv()
+    session_cookie = os.getenv("AOC_SESSION")
+    print(f"Session cookie: {session_cookie}")
+
     parser = argparse.ArgumentParser(
         description="Script for generating a new Advent of Code day."
     )
