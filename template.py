@@ -1,6 +1,3 @@
-from utils import parse_int
-
-# Example input
 EXAMPLE_INPUT = """
 1000
 2000
@@ -12,17 +9,16 @@ EXAMPLE_INPUT = """
 6000
 """.strip()
 
+def parse_input(data: str) -> list:
+    """Parse input string into desired format."""
+    return [int(x) for x in data.split("\n") if x.strip()]
 
-def part1(data):
-    # Solution for part 1
-    parsed_data = parse_int(data)
-    # Your part 1 logic here
-    print(parsed_data)
-    return
+def part1(data: str):
+    """Solution for part 1."""
+    numbers = parse_input(data)
+    return None
 
-
-def part2(data):
-    # Solution for part 2
-    # Your part 2 logic here
-    print("Part 2 still has to be implemented")
-    return
+def part2(data: str):
+    """Solution for part 2."""
+    numbers = parse_input(data)
+    return None

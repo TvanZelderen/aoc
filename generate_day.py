@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 from aocd import get_data
+from datetime import date
 
 
 def create_data_file(year, day):
@@ -42,20 +43,28 @@ def create_solution_file(year, day):
 
 
 def main():
-    # Setup command-line argument parsing
     parser = argparse.ArgumentParser(
-        description="Generate Advent of Code files for a specific day."
+        description="Script for generating a new Advent of Code day."
     )
     parser.add_argument(
-        "year", type=int, help="The year of the Advent of Code challenge"
+        "numbers", type=int, nargs='*',
+        help="Year and day of the Advent of Code challenge"
     )
-    parser.add_argument("day", type=int, help="The day of the Advent of Code challenge")
-
+    
     args = parser.parse_args()
-
-    # Generate both data file and solution file
-    create_data_file(args.year, args.day)
-    create_solution_file(args.year, args.day)
+    
+    if not args.numbers:
+        # Generate the current date
+        year, day = date.today().year, date.today().day
+        create_data_file(year, day)
+        create_solution_file(year, day)
+    elif len(args.numbers) == 2:
+        # Generate the requested date
+        year, day = args.numbers
+        create_data_file(year, day)
+        create_solution_file(year, day)
+    else:
+        parser.error("Please provide either no arguments or both year and day")
 
 
 if __name__ == "__main__":
