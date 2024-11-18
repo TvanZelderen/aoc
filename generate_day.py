@@ -48,7 +48,6 @@ def main():
     # load AoC cookie from .env file
     load_dotenv()
     session_cookie = os.getenv("AOC_SESSION")
-    print(f"Session cookie: {session_cookie}")
 
     parser = argparse.ArgumentParser(
         description="Script for generating a new Advent of Code day."
