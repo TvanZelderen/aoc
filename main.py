@@ -11,14 +11,14 @@ def run_part(module, part_num, data, expected=None):
         return None, 0, False
 
     start = perf_counter()
-    try:
-        result = part_func(data)
-        time_taken = perf_counter() - start
-        passed = (result == expected) if expected is not None else None
-        return result, time_taken, passed
-    except Exception as e:
-        print(f"Error in part {part_num}: {str(e)}")  # More helpful error message
-        return None, 0, False
+    # try:
+    result = part_func(data)
+    time_taken = perf_counter() - start
+    passed = (result == expected) if expected is not None else None
+    return result, time_taken, passed
+    # except Exception as e:
+    #     print(f"Error in part {part_num}: {str(e)}")  # More helpful error message
+    #     return None, 0, False
 
 def run_solution(year: int, day: int):
     """Run a specific day's solution."""
