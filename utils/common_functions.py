@@ -1,3 +1,7 @@
+import re
+import itertools
+import math
+
 def parse_grid(data: str):
     """Parse a grid
     Example input:
@@ -50,3 +54,46 @@ def letter_count(string: str):
     for letter in string:
         letter_count[letter] = letter_count.get(letter,0)+1
     return letter_count
+
+def skip_index(line: list):
+    return ((line[:i] + line[i + 1:]) for i in range(len(line)))
+
+def parse_integers(s: str) -> list[int]:
+    """
+    Extract all integers from a string, including negative numbers.
+    
+    Examples:
+    parse_integers("Day 1: 83 -4 26") -> [1, 83, -4, 26]
+    parse_integers("Temperature: -5 degrees") -> [-5]
+    """
+    return [int(num) for num in re.findall(r'-?\d+', s)]
+
+def sliding_window(iterable, window_size):
+    """
+    Create sliding windows of a specified size over an iterable.
+    
+    Examples:
+    list(sliding_window([1,2,3,4,5], 3)) -> [(1,2,3), (2,3,4), (3,4,5)]
+    """
+    it = iter(iterable)
+    window = tuple(itertools.islice(it, window_size))
+    if len(window) == window_size:
+        yield window
+    for elem in it:
+        window = window[1:] + (elem,)
+        yield window
+
+def lcm(a: int, b: int) -> int:
+    """
+    Calculate Least Common Multiple of two numbers.
+    
+    Example:
+    lcm(4, 6) -> 12
+    """
+    return abs(a * b) // math.gcd(a, b)
+
+def intersection_of_sets(a: set, b: set) -> set:
+    return a & b
+
+if __name__ == "__main__":
+    pass
