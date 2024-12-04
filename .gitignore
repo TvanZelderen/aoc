@@ -164,5 +164,4 @@ cython_debug/
 # Project specific
 .inputs
 .aoc-helper.sh
-.aoc-helper.psm1
 .aoc-helpers.psm1

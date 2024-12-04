@@ -10,29 +10,21 @@ def parse_lines(data: str):
 def part1(data: str):
     """Solution for part 1."""
     data = parse_lines(data)
-    pattern = re.compile(r"mul\(\d+,\d+\)")
-    list_of_muls = pattern.findall(data)
-    sum = 0
-    for line in list_of_muls:
-        a, b = (int(''.join(filter(str.isdigit, part.strip()))) for part in line.split(','))
-        sum += a*b
-    return sum
+    pattern = re.compile(r"mul\((\d+),(\d+)\)")
+    return sum(int(match[0]) * int(match[1]) for match in re.findall(pattern, data))
 
 def part2(data: str):
     """Solution for part 2."""
     data = parse_lines(data)
     pattern = re.compile(r"mul\(\d+,\d+\)|do\(\)|don't\(\)")
-    list_of_muls = pattern.findall(data)
     sum = 0
     execute = True
-    for line in list_of_muls:
-        if line == "do()":
+    for match in pattern.findall(data):
+        if match == "do()":
             execute = True
-            continue
-        if line == "don't()":
+        elif match == "don't()":
             execute = False
-            continue
-        if execute:
-            a, b = (int(''.join(filter(str.isdigit, part.strip()))) for part in line.split(','))
-            sum += a*b
+        elif execute:
+            x, y = map(int, match[4:-1].split(","))
+            sum += x * y
     return sum
