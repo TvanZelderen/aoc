@@ -56,7 +56,7 @@ def run_test(year: int, day: int):
     for part in (1, 2):
 
         # Run test
-        result, _ = run_part(module, part, test_input)
+        result, time_taken = run_part(module, part, test_input)
            
         # Format and print result
         print(f"Test part {part}:       {result}")
