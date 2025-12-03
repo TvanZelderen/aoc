@@ -55,5 +55,4 @@ def part2(data: str, pos: int = 50):
         else:
             print("whoah")
 
-    return crossing_right + crossing_left, crossing_right, crossing_left
-
+    return crossing_right + crossing_left
