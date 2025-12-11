@@ -13,6 +13,60 @@ def parse_grid(data: str):
     """
     return [[char for char in line] for line in data.splitlines()]
 
+def compass_search(grid, r, c):
+    directions = [[-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1]]
+    rolls = 0
+    for direction in directions:
+        x, y = direction
+        try:
+            if r+x == -1 or c+y == -1:
+                continue
+            if grid[r+x][c+y] == "@" :
+                rolls += 1
+        except IndexError:
+            pass
+    # print(f"Standby, we are checking. {r},{c}: {rolls}")
+    return rolls
+
+def add_range(sets, new_set):
+    new_set = set(new_set)
+    merged = new_set.copy()
+    remaining = []
+    
+    for s in sets:
+        if s & new_set:  # If there's overlap
+            merged |= s  # Merge it
+        else:
+            remaining.append(s)
+    
+    remaining.append(merged)
+    return remaining
+
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+    
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # Path compression
+        return self.parent[x]
+    
+    def union(self, x, y):
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x == root_y:
+            return False  # Already connected
+        
+        # Union by rank
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+        return True  # Successfully merged
+
 def parse_coordinates(data: str) -> list[complex]:
     """Parse coordinate pairs as complex numbers.
     

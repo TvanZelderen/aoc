@@ -1,8 +1,10 @@
 import argparse
+import os
 import importlib
 from datetime import date
 from pathlib import Path
 from time import perf_counter
+from aocd import get_data
 
 def run_part(module, part_num, data):
     """Run a single part of the solution, returns (result, time_taken, passed)"""
@@ -61,6 +63,52 @@ def run_test(year: int, day: int):
         # Format and print result
         print(f"Test part {part}:       {result}")
 
+def setup_day(year: int, day: int):
+    """Set up files for a specific day."""
+    
+    # Create directory structure
+    input_dir = Path("inputs") / str(year)
+    solution_dir = Path("solutions") / f"year{year}"
+    
+    input_dir.mkdir(parents=True, exist_ok=True)
+    solution_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Create __init__.py files
+    Path("solutions/__init__.py").touch()
+    (solution_dir / "__init__.py").touch()
+    
+    # Fetch and save input
+    input_file = input_dir / f"day{day:02d}.txt"
+    if not input_file.exists():
+        try:
+            puzzle_input = get_data(day=day, year=year)
+            input_file.write_text(puzzle_input)
+            print(f"✓ Fetched input for day {day}")
+        except Exception as e:
+            print(f"✗ Failed to fetch input: {e}")
+            return False
+    else:
+        print(f"→ Input already exists: {input_file}")
+    
+    # Create solution file from template
+    solution_file = solution_dir / f"day{day:02d}.py"
+    if not solution_file.exists():
+        template_file = Path("template.py")
+        if not template_file.exists():
+            print(f"✗ Template file not found: {template_file}")
+            return False
+        
+        template_content = template_file.read_text()
+        # Replace placeholders if any exist in your template
+        content = template_content.replace("YEAR", str(year)).replace("DAY", str(day))
+        solution_file.write_text(content)
+        print(f"✓ Created solution template: {solution_file}")
+        print(f"→ Paste example input into EXAMPLE_INPUT in {solution_file}")
+    else:
+        print(f"→ Solution file already exists: {solution_file}")
+    
+    return True
+
 def main():
     parser = argparse.ArgumentParser(
         description="Run Advent of Code solutions.",
@@ -73,6 +121,10 @@ def main():
     parser.add_argument(
         "--test", action="store_true",
         help="Run with example input instead of puzzle input"
+    )
+    parser.add_argument(
+        "--setup", action="store_true",
+        help="Set up files for a specific day (fetch input and create template)"
     )
    
     args = parser.parse_args()
@@ -93,7 +145,12 @@ def main():
             parser.error("Invalid day: must be between 1 and 25")
     else:
         parser.error("Please provide either no arguments or both year and day")
-    if args.test:
+
+    if args.setup:
+        print(f"Setting up Advent of Code {year} day {day}")
+        print("-" * 40)
+        setup_day(year, day)
+    elif args.test:
         run_test(year, day)
     else:
         run_solution(year, day)

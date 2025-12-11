@@ -21,28 +21,24 @@ def get_max_n_digits(line, n):
     start = 0
     
     for position in range(n):
+        # Calculate how far we can search while leaving enough digits
         remaining_needed = n - position - 1
         end = len(line) - remaining_needed
-
-        max_digit = 0
-        max_index = 0
+        
+        # Find the maximum digit in the valid range
+        max_digit = '0'
+        max_index = start
         for i in range(start, end):
-            if int(line[i]) > max_digit:
-                max_digit = int(line[i])
+            if line[i] > max_digit:  # String comparison works for digits, so I stopped converting
+                max_digit = line[i]
                 max_index = i
         
         result.append(max_digit)
         start = max_index + 1
-
-    # print(f"Get max {n}: {result}")
         
-    return ''.join(str(x) for x in result)
-
+    return ''.join(result)
 
 def part2(data: str):
     """Solution for part 2."""
-    data = [line for line in data.splitlines()]
-    total = 0
-    for line in data:
-        total += int(get_max_n_digits(line, 12))
-    return total
+    lines = data.splitlines()
+    return sum(int(get_max_n_digits(line, 12)) for line in lines)
